@@ -1,0 +1,37 @@
+payload
+
+1. manually insert roles into the database
+INSERT INTO roles (name) VALUES ('ROLE_USER');
+INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
+INSERT INTO roles (name) VALUES ('ROLE_MODERATOR');
+
+2. signup
+
+curl --location 'http://localhost:9999/api/auth/signup' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "admin",
+    "email": "admin@example.com",
+    "password": "strongpassword123",
+    "role": [
+        "ROLE_ADMIN"
+    ]
+}'
+
+
+
+3. signin
+
+curl --location 'http://localhost:9999/api/auth/signin' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: rose=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyOTE5MTk5NywiZXhwIjoxNzI5Mjc4Mzk3fQ.w_7RL0a0yRddTqo52QnYiGioohL1lLPC5hRYAHbzsN8' \
+--data '{
+    "username": "admin",
+    "password": "strongpassword123"
+}'
+
+
+4. logout
+
+curl -X POST "http://localhost:9999/api/auth/signout" \
+-H "Content-Type: application/json"
