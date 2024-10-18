@@ -57,15 +57,19 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
-						.requestMatchers("/api/test/**").permitAll().anyRequest().authenticated());
+	    http.csrf(csrf -> csrf.disable())
+	        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	        .authorizeHttpRequests(auth -> auth
+	            .requestMatchers("/api/auth/**").permitAll()
+	            .requestMatchers("/api/test/**").permitAll()
+	            // Allow Swagger UI and OpenAPI endpoints without authentication
+	            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+	            .anyRequest().authenticated());
 
-		http.authenticationProvider(authenticationProvider());
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+	    http.authenticationProvider(authenticationProvider());
+	    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
+	    return http.build();
 	}
 }
