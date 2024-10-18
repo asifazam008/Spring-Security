@@ -65,6 +65,7 @@ public class WebSecurityConfig {
 	            .requestMatchers("/api/test/**").permitAll()
 	            // Allow Swagger UI and OpenAPI endpoints without authentication
 	            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+	            .requestMatchers("/publish/**").permitAll()  // Securing the /publish endpoint
 	            .anyRequest().authenticated());
 
 	    http.authenticationProvider(authenticationProvider());
